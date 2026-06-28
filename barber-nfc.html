@@ -9,10 +9,8 @@
   <meta property="og:title" content="FÜNF STERNE FRISEUR by Mido" />
   <meta property="og:description" content="Premium barbershop in Goch. Precision cuts since 2018." />
   <meta property="og:type" content="website" />
-  <!-- TODO: add real og:image URL -->
-  <meta property="og:image" content="" />
+  <meta property="og:image" content="" /><!-- TODO: add real og:image URL -->
 
-  <!-- Favicon: inline SVG scissors in gold -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='28' cy='28' r='13' fill='none' stroke='%23C9A84C' stroke-width='5'/%3E%3Ccircle cx='28' cy='72' r='13' fill='none' stroke='%23C9A84C' stroke-width='5'/%3E%3Cline x1='28' y1='41' x2='82' y2='20' stroke='%23C9A84C' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='28' y1='59' x2='82' y2='80' stroke='%23C9A84C' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,12 +22,12 @@
 
     :root {
       --bg: #0D0D0D;
-      --surface: #1A1A1A;
-      --border: #2E2E2E;
       --text: #F5F0E8;
       --muted: #8A8070;
       --gold: #C9A84C;
       --gold-dim: #9A7A34;
+      --gold-pale: rgba(201,168,76,0.15);
+      --border: #2E2E2E;
     }
 
     html { -webkit-text-size-adjust: 100%; }
@@ -42,11 +40,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: max(20px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+      padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      position: relative;
     }
 
     /* =====================================================
@@ -66,11 +63,10 @@
     .bg-photo {
       background-size: cover;
       background-position: center;
-      background-color: #0a0a0a; /* graceful fallback when image fails */
+      background-color: #111;
       will-change: transform;
     }
 
-    /* Ken Burns variants — each photo feels independent */
     .bg-photo.kb-1 { animation: kb1 22s ease-in-out infinite alternate; }
     .bg-photo.kb-2 { animation: kb2 26s ease-in-out infinite alternate; }
     .bg-photo.kb-3 { animation: kb3 24s ease-in-out infinite alternate; }
@@ -78,37 +74,42 @@
     .bg-photo.kb-5 { animation: kb5 21s ease-in-out infinite alternate; }
     .bg-photo.kb-6 { animation: kb6 27s ease-in-out infinite alternate; }
 
-    @keyframes kb1 { from { transform: scale(1.00) translate(0,0); }     to { transform: scale(1.08) translate(-1.5%, -1%); } }
-    @keyframes kb2 { from { transform: scale(1.02) translate(0,0); }     to { transform: scale(1.10) translate(1.5%, -1.5%); } }
-    @keyframes kb3 { from { transform: scale(0.98) translate(0,0); }     to { transform: scale(1.06) translate(-1%, 1.5%); } }
-    @keyframes kb4 { from { transform: scale(1.04) translate(0,0); }     to { transform: scale(1.12) translate(2%, 1%); } }
-    @keyframes kb5 { from { transform: scale(1.00) translate(0,0); }     to { transform: scale(1.07) translate(1%, -2%); } }
-    @keyframes kb6 { from { transform: scale(1.02) translate(0,0); }     to { transform: scale(1.09) translate(-2%, 1%); } }
+    @keyframes kb1 { from { transform: scale(1.00) translate(0,0); }   to { transform: scale(1.08) translate(-1.5%,-1%); } }
+    @keyframes kb2 { from { transform: scale(1.02) translate(0,0); }   to { transform: scale(1.10) translate(1.5%,-1.5%); } }
+    @keyframes kb3 { from { transform: scale(0.98) translate(0,0); }   to { transform: scale(1.06) translate(-1%,1.5%); } }
+    @keyframes kb4 { from { transform: scale(1.04) translate(0,0); }   to { transform: scale(1.12) translate(2%,1%); } }
+    @keyframes kb5 { from { transform: scale(1.00) translate(0,0); }   to { transform: scale(1.07) translate(1%,-2%); } }
+    @keyframes kb6 { from { transform: scale(1.02) translate(0,0); }   to { transform: scale(1.09) translate(-2%,1%); } }
 
-    /* Dark overlay so the card stays readable */
+    /* Lighter overlay — photos must breathe through the glass */
     .bg-overlay {
       position: fixed;
       inset: 0;
       z-index: 1;
-      background: rgba(13, 13, 13, 0.55);
+      background: rgba(0,0,0,0.28);
       pointer-events: none;
     }
 
-    /* Soft radial vignette darkening the edges */
     .bg-vignette {
       position: fixed;
       inset: 0;
       z-index: 2;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%);
+      background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.55) 100%);
       pointer-events: none;
     }
 
     /* =====================================================
-       LAYER 2 — CENTERED GLASSMORPHISM CARD
+       LAYER 2 — LIQUID GLASS CARD
+       Apple visionOS / iOS 26 aesthetic:
+       - Ultra-low background opacity so photos bleed through
+       - Aggressive backdrop-filter blur + brightness + saturate
+       - Prismatic border via layered box-shadows & gradient border trick
+       - Specular highlight strip at top edge (::before)
+       - Subtle inner glow at bottom edge (::after)
        ===================================================== */
     main {
       position: relative;
-      z-index: 1;
+      z-index: 3;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -116,53 +117,113 @@
 
     .card {
       position: relative;
-      z-index: 3;
       width: 100%;
       max-width: 380px;
-      background: rgba(13, 13, 13, 0.80);
-      backdrop-filter: blur(20px) saturate(140%);
-      -webkit-backdrop-filter: blur(20px) saturate(140%);
-      border: 1px solid rgba(201, 168, 76, 0.18);
-      border-radius: 20px;
-      padding: 32px 24px 28px;
+
+      /* Glass fill — very transparent */
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(40px) saturate(180%) brightness(1.08);
+      -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.08);
+
+      /* Layered border: gradient via padding trick using a pseudo wrapper,
+         but we'll use box-shadow stacking for single-element approach */
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.18);
+
+      padding: 34px 24px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      /* Deep layered shadows for physical depth */
       box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.55),
-        0 10px 30px rgba(0, 0, 0, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.02),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        /* Outer ambient */
+        0 40px 100px rgba(0,0,0,0.45),
+        0 16px 40px rgba(0,0,0,0.35),
+        /* Gold prismatic rim at edges */
+        0 0 0 0.5px rgba(201,168,76,0.22),
+        /* Inner top specular */
+        inset 0 1.5px 0 rgba(255,255,255,0.28),
+        /* Inner bottom depth */
+        inset 0 -1px 0 rgba(0,0,0,0.25),
+        /* Subtle gold inner glow */
+        inset 0 0 60px rgba(201,168,76,0.04);
     }
 
-    /* ========== LOGO ========== */
+    /* Top-edge specular highlight — the "wet glass" catch light */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.55) 30%,
+        rgba(201,168,76,0.5) 50%,
+        rgba(255,255,255,0.55) 70%,
+        transparent
+      );
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    /* Bottom inner glow — depth illusion */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(201,168,76,0.12) 50%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    /* ========== LOGO MARK ========== */
     .logo-mark {
-      width: 64px;
-      height: 64px;
-      border: 1.5px solid var(--gold);
+      width: 66px;
+      height: 66px;
       border-radius: 50%;
+      border: 1.5px solid rgba(201,168,76,0.75);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 18px;
       position: relative;
+      /* Liquid glass circle */
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow:
+        0 8px 24px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        inset 0 -1px 0 rgba(0,0,0,0.2);
       opacity: 0;
       animation: fadeUp 0.5s ease 0.1s both;
     }
 
-    .logo-mark::after {
+    /* Outer glow ring */
+    .logo-mark::before {
       content: '';
       position: absolute;
-      inset: -5px;
-      border: 1px solid rgba(201, 168, 76, 0.18);
+      inset: -6px;
+      border: 1px solid rgba(201,168,76,0.18);
       border-radius: 50%;
-      pointer-events: none;
     }
 
     .logo-mark svg {
       width: 28px;
       height: 28px;
       fill: var(--gold);
+      filter: drop-shadow(0 0 6px rgba(201,168,76,0.4));
     }
 
     /* ========== SHOP NAME ========== */
@@ -174,33 +235,33 @@
       text-align: center;
       line-height: 1.1;
       color: var(--text);
+      text-shadow: 0 1px 12px rgba(0,0,0,0.5);
       opacity: 0;
       animation: fadeUp 0.5s ease 0.2s both;
     }
-
-    .shop-name .gold { color: var(--gold); }
+    .shop-name .gold {
+      color: var(--gold);
+      filter: drop-shadow(0 0 8px rgba(201,168,76,0.35));
+    }
 
     .by-mido {
-      font-family: 'Inter', sans-serif;
       font-size: 0.78rem;
       font-weight: 300;
       font-style: italic;
-      color: var(--muted);
+      color: rgba(255,255,255,0.45);
       letter-spacing: 0.08em;
       margin-top: 6px;
-      text-align: center;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.25s both;
     }
 
     .tagline {
-      font-size: 0.7rem;
-      font-weight: 300;
+      font-size: 0.68rem;
+      font-weight: 400;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 12px;
-      text-align: center;
+      color: rgba(255,255,255,0.35);
+      margin-top: 10px;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.3s both;
     }
@@ -211,7 +272,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin: 24px 0;
+      margin: 22px 0;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.4s both;
     }
@@ -219,7 +280,7 @@
     .divider-line {
       flex: 1;
       height: 1px;
-      background: var(--border);
+      background: rgba(255,255,255,0.1);
       position: relative;
       overflow: hidden;
     }
@@ -227,10 +288,8 @@
     .divider-line::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
       animation: shimmerDraw 1.4s ease 0.7s both;
     }
@@ -240,7 +299,7 @@
       font-size: 1rem;
       flex-shrink: 0;
       transform: rotate(-30deg);
-      line-height: 1;
+      filter: drop-shadow(0 0 6px rgba(201,168,76,0.5));
     }
 
     @keyframes shimmerDraw {
@@ -248,7 +307,7 @@
       to   { left: 100%; }
     }
 
-    /* ========== SOCIAL LINKS ========== */
+    /* ========== SOCIAL LINK BUTTONS ========== */
     .links {
       width: 100%;
       display: flex;
@@ -261,88 +320,100 @@
     .link-btn {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 11px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      gap: 13px;
+      padding: 11px 14px;
+      /* Each button is also liquid glass */
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
       text-decoration: none;
       color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+      transition: background 0.22s, border-color 0.22s, transform 0.15s, box-shadow 0.22s;
       position: relative;
       overflow: hidden;
+      box-shadow:
+        0 4px 16px rgba(0,0,0,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 -1px 0 rgba(0,0,0,0.15);
     }
 
+    /* Specular sheen on each button */
     .link-btn::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--gold), var(--gold-dim));
-      opacity: 0;
-      transition: opacity 0.2s;
+      top: 0; left: 8%; right: 8%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
       pointer-events: none;
     }
 
-    .link-btn:hover {
-      border-color: var(--gold-dim);
-      background: #222;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    /* Gold left-edge accent on hover */
+    .link-btn::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 15%; bottom: 15%;
+      width: 2.5px;
+      background: linear-gradient(180deg, var(--gold), var(--gold-dim));
+      border-radius: 999px;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
 
-    .link-btn:hover::before { opacity: 1; }
+    .link-btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(201,168,76,0.45);
+      transform: translateY(-1.5px);
+      box-shadow:
+        0 10px 28px rgba(0,0,0,0.3),
+        0 0 0 0.5px rgba(201,168,76,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        inset 0 -1px 0 rgba(0,0,0,0.15);
+    }
 
+    .link-btn:hover::after { opacity: 1; }
     .link-btn:active { transform: translateY(0); }
 
     .link-icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #242424;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid var(--border);
-      position: relative;
-      z-index: 1;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
     }
 
     .link-icon svg {
       width: 17px;
       height: 17px;
       fill: var(--gold);
+      filter: drop-shadow(0 0 4px rgba(201,168,76,0.3));
     }
 
     .link-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      position: relative;
-      z-index: 1;
       min-width: 0;
     }
 
     .link-platform {
-      display: block;
-      font-size: 0.66rem;
-      color: var(--muted);
-      font-weight: 400;
-      letter-spacing: 0.14em;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       margin-bottom: 2px;
     }
 
     .link-handle {
-      display: block;
       font-size: 0.88rem;
-      color: var(--text);
+      color: rgba(255,255,255,0.88);
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -350,11 +421,9 @@
     }
 
     .link-arrow {
-      color: var(--muted);
-      font-size: 0.95rem;
+      color: rgba(255,255,255,0.28);
+      font-size: 0.9rem;
       transition: color 0.2s, transform 0.2s;
-      position: relative;
-      z-index: 1;
     }
 
     .link-btn:hover .link-arrow {
@@ -365,46 +434,45 @@
     /* ========== APP TEASER ========== */
     .app-teaser {
       width: 100%;
-      margin-top: 10px;
-      padding: 11px 16px;
-      background: rgba(26, 26, 26, 0.5);
-      border: 1px dashed rgba(201, 168, 76, 0.4);
-      border-radius: 8px;
+      margin-top: 9px;
+      padding: 11px 14px;
+      background: rgba(201,168,76,0.04);
+      border: 1px dashed rgba(201,168,76,0.35);
+      border-radius: 14px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 13px;
       cursor: default;
       pointer-events: none;
       position: relative;
       overflow: hidden;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.6s both, appGlow 4s ease-in-out 1.2s infinite;
+      animation: fadeUp 0.5s ease 0.6s both, appGlow 4s ease-in-out 1.5s infinite;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
     }
 
-    .app-teaser::after {
+    /* Shimmer sweep */
+    .app-teaser::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 55%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.18), transparent);
-      animation: appShimmer 3.6s ease-in-out 1.3s infinite;
-      pointer-events: none;
+      top: 0; left: -100%;
+      width: 55%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.14), transparent);
+      animation: appShimmer 3.6s ease-in-out 1.6s infinite;
     }
 
     .app-icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #242424;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.22);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      border: 1px solid rgba(201, 168, 76, 0.22);
-      position: relative;
-      z-index: 1;
     }
 
     .app-icon svg {
@@ -421,38 +489,33 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      position: relative;
-      z-index: 1;
     }
 
     .app-label {
-      display: block;
-      font-size: 0.66rem;
-      color: var(--muted);
-      font-weight: 400;
-      letter-spacing: 0.14em;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.38);
+      font-weight: 500;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       margin-bottom: 2px;
     }
 
     .app-status {
-      display: block;
       font-size: 0.88rem;
-      color: var(--text);
+      color: rgba(255,255,255,0.75);
       font-weight: 500;
     }
 
     .app-pill {
-      position: relative;
-      z-index: 1;
       color: var(--gold);
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       font-weight: 500;
-      padding: 3px 8px;
-      border: 1px solid rgba(201, 168, 76, 0.3);
+      padding: 3px 9px;
+      border: 1px solid rgba(201,168,76,0.3);
       border-radius: 999px;
+      background: rgba(201,168,76,0.06);
       flex-shrink: 0;
     }
 
@@ -462,24 +525,24 @@
     }
 
     @keyframes appGlow {
-      0%, 100% { box-shadow: 0 0 0 rgba(201, 168, 76, 0); }
-      50%      { box-shadow: 0 0 18px rgba(201, 168, 76, 0.14); }
+      0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 rgba(201,168,76,0); }
+      50%       { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 0 22px rgba(201,168,76,0.12); }
     }
 
     /* ========== FOOTER ========== */
-    .footer {
+    .footer-text {
       margin-top: 24px;
-      font-size: 0.66rem;
+      font-size: 0.62rem;
       font-weight: 400;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: #4A4A4A;
+      color: rgba(255,255,255,0.18);
       text-align: center;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.7s both;
     }
 
-    /* ========== ANIMATIONS ========== */
+    /* ========== ENTRANCE ANIMATION ========== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -493,25 +556,23 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
       }
-      .bg-photo { animation: none; transform: none !important; }
-      .bg-overlay, .bg-vignette { opacity: 1; }
+      .bg-photo { animation: none !important; transform: none !important; }
       .card, .logo-mark, .shop-name, .by-mido, .tagline,
-      .divider, .links, .app-teaser, .footer { opacity: 1 !important; transform: none !important; }
+      .divider, .links, .app-teaser, .footer-text {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- =====================================================
-       LAYER 1 — PHOTO BACKGROUND (built by JS below)
-       ===================================================== -->
+  <!-- LAYER 1 — PHOTO BACKGROUND (built by JS) -->
   <div class="bg-photos" id="bgPhotos" aria-hidden="true"></div>
   <div class="bg-overlay" aria-hidden="true"></div>
   <div class="bg-vignette" aria-hidden="true"></div>
 
-  <!-- =====================================================
-       LAYER 2 — FOREGROUND CARD
-       ===================================================== -->
+  <!-- LAYER 2 — LIQUID GLASS CARD -->
   <main>
     <div class="card">
 
@@ -522,24 +583,21 @@
         </svg>
       </div>
 
-      <!-- Shop name -->
       <h1 class="shop-name">FÜNF <span class="gold">STERNE</span> FRISEUR</h1>
       <p class="by-mido">by Mido</p>
       <p class="tagline">Precision Cuts · Est. 2018</p>
 
-      <!-- Razor divider -->
+      <!-- Shimmer divider -->
       <div class="divider" aria-hidden="true">
         <div class="divider-line"></div>
         <div class="divider-icon">✂</div>
         <div class="divider-line"></div>
       </div>
 
-      <!-- ===== MIDO: EASY EDIT — SOCIAL LINKS ===== -->
-      <!-- All four social/contact destinations live here.
-           Update href, label, or handle without touching the rest of the page. -->
+      <!-- ===== MIDO: SOCIAL LINKS — edit href / handle here ===== -->
       <nav class="links" aria-label="Social media and contact links">
 
-        <!-- 1) Instagram -->
+        <!-- Instagram -->
         <a class="link-btn" href="https://instagram.com/mido.barbar7" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
           <div class="link-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
@@ -551,7 +609,7 @@
           <span class="link-arrow" aria-hidden="true">→</span>
         </a>
 
-        <!-- 2) TikTok -->
+        <!-- TikTok -->
         <a class="link-btn" href="https://tiktok.com/@midomahmoudd" target="_blank" rel="noopener noreferrer" aria-label="Follow us on TikTok">
           <div class="link-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
@@ -563,7 +621,7 @@
           <span class="link-arrow" aria-hidden="true">→</span>
         </a>
 
-        <!-- 3) Google Maps -->
+        <!-- Google Maps -->
         <a class="link-btn" href="https://maps.google.com/?q=Frauenstra%C3%9Fe+5,+47574+Goch" target="_blank" rel="noopener noreferrer" aria-label="Find us on Google Maps">
           <div class="link-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -577,11 +635,11 @@
 
       </nav>
 
-      <!-- 4) App teaser (not a link) -->
+      <!-- App teaser — not a link -->
       <div class="app-teaser" role="status" aria-label="Our mobile app is coming soon">
         <div class="app-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
-            <path d="M12 3l1.7 3.4 3.7.5-2.7 2.6.7 3.7L12 11.4 8.6 13.2l.7-3.7L6.6 6.9l3.7-.5L12 3z"/>
+            <path d="M12 2l2.09 4.26L19 7.27l-3.5 3.41.83 4.82L12 13.27l-4.33 2.23.83-4.82L5 7.27l4.91-.71L12 2z"/>
           </svg>
         </div>
         <div class="app-text">
@@ -591,51 +649,45 @@
         <span class="app-pill" aria-hidden="true">Soon</span>
       </div>
 
-      <!-- Footer -->
-      <footer class="footer">Tap · Follow · Visit</footer>
+      <footer class="footer-text">Tap · Follow · Visit</footer>
 
     </div>
   </main>
 
   <script>
-    /* ===== MIDO: EASY EDIT SECTION ===== */
-    /* Photos are now in the project folder. Drop your real photo URLs here
-       (or local filenames next to this HTML) and the cinematic background
-       handles the rest — grid, Ken Burns, vignette, overlays. */
+    /* ===== MIDO: EASY EDIT SECTION =====
+       Drop your real photo URLs below — the cinematic background does the rest.
+       You can use local filenames (if in the same folder) or full https:// URLs. */
+
     const PHOTOS = [
-      'P1 (1).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (2).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (3).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (4).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (5).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (5).jpeg',   /* TODO: replace with real photo URL — duplicates the 6th slot */
+      'P1 (1).jpeg',   /* TODO: replace with real photo URL */
+      'P1 (2).jpeg',   /* TODO: replace with real photo URL */
+      'P1 (3).jpeg',   /* TODO: replace with real photo URL */
+      'P1 (4).jpeg',   /* TODO: replace with real photo URL */
+      'P1 (5).jpeg',   /* TODO: replace with real photo URL */
+      'P1 (5).jpeg',   /* TODO: replace with real photo URL — add a 6th when ready */
     ];
 
     (function buildBackground() {
       const stage = document.getElementById('bgPhotos');
       if (!stage) return;
-
-      PHOTOS.forEach((src, i) => {
+      const kbClasses = ['kb-1','kb-2','kb-3','kb-4','kb-5','kb-6'];
+      PHOTOS.forEach(function(src, i) {
         const tile = document.createElement('div');
-        tile.className = 'bg-photo kb-' + (((i % 6) + 1));
+        tile.className = 'bg-photo ' + (kbClasses[i % 6]);
         tile.style.backgroundImage = "url('" + src.replace(/'/g, "\\'") + "')";
-        // Graceful fallback: if image fails, the slot stays dark — no broken icon.
-        tile.addEventListener('error', function () {
-          tile.style.backgroundImage = 'none';
-        }, true);
         stage.appendChild(tile);
       });
     })();
 
-    // Subtle brand console signature — for the devs who peek 👀
     (function () {
       try {
         console.log(
           '%c✂ FÜNF STERNE FRISEUR %cby Mido',
-          'color:#C9A84C;font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:0.04em;',
+          'color:#C9A84C;font-family:Georgia,serif;font-size:18px;font-weight:700;',
           'color:#8A8070;font-family:Georgia,serif;font-size:14px;font-style:italic;'
         );
-      } catch (e) {}
+      } catch(e) {}
     })();
   </script>
 </body>

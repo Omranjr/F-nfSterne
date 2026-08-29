@@ -784,7 +784,16 @@
        ===================================================== */
     .splash {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      /* iOS Safari sizes `inset: 0` fixed boxes to the SMALL viewport (URL bar
+         expanded). Once the bar collapses the visual viewport grows and the page
+         shows through beneath the splash. Pin to the LARGE viewport instead -
+         100vh already means that on iOS, 100lvh says it explicitly elsewhere. */
+      height: 100vh;
+      height: 100lvh;
+      min-height: 100dvh;
       z-index: 50;
       background: #050403;          /* theme.splashGround */
       overflow: hidden;
@@ -833,7 +842,12 @@
 
     .splash-text {
       position: absolute;
-      left: 0; right: 0; bottom: 54px;
+      left: 0; right: 0;
+      bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+      /* The box now spans the large viewport, so lift the type by whatever the
+         browser chrome currently covers - it stays readable with the URL bar
+         expanded and still sits low once it collapses. */
+      bottom: calc(100lvh - 100svh + 54px + env(safe-area-inset-bottom, 0px));
       display: flex;
       flex-direction: column;
       align-items: center;

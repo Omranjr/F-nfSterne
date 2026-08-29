@@ -1,0 +1,70 @@
+﻿{
+    "value":  [
+                  {
+                      "id":  "cmrqulj5s000066nzsyr7961u",
+                      "name":  "alo ",
+                      "description":  "habeby haklmk",
+                      "category":  "HAIR",
+                      "basePrice":  500,
+                      "images":  [
+                                     "https://jjmpyfxaoavwervlkzam.supabase.co/storage/v1/object/public/product-images/1784408239664-D18168757-p1.jpg"
+                                 ],
+                      "isActive":  true,
+                      "createdAt":  "2026-07-18T20:57:26.827Z",
+                      "updatedAt":  "2026-07-18T20:57:26.827Z"
+                  },
+                  {
+                      "id":  "cmrqk0khx0000asl3t9hhln15",
+                      "name":  "cantu hair cream",
+                      "description":  "Hair cream for curly hair",
+                      "category":  "HAIR",
+                      "basePrice":  10,
+                      "images":  [
+                                     "https://jjmpyfxaoavwervlkzam.supabase.co/storage/v1/object/public/product-images/1784403037522-main.thgimages.webp"
+                                 ],
+                      "isActive":  true,
+                      "createdAt":  "2026-07-18T16:01:12.512Z",
+                      "updatedAt":  "2026-07-18T19:30:42.698Z"
+                  },
+                  {
+                      "id":  "cmrqo7r9m0000ryvqnsk8o66t",
+                      "name":  "cerave waschgel",
+                      "description":  "cerave waschgel for sensitive skin",
+                      "category":  "SKIN_CARE",
+                      "basePrice":  15,
+                      "images":  [
+                                     "https://jjmpyfxaoavwervlkzam.supabase.co/storage/v1/object/public/product-images/1784403076933-D18168757-p1.jpg"
+                                 ],
+                      "isActive":  true,
+                      "createdAt":  "2026-07-18T17:58:46.334Z",
+                      "updatedAt":  "2026-07-18T19:31:19.120Z"
+                  },
+                  {
+                      "id":  "cmrqk2lfb0001asl3qzu23bs0",
+                      "name":  "loreal hair serum",
+                      "description":  "loreal hair serum for natural shine",
+                      "category":  "HAIR",
+                      "basePrice":  15,
+                      "images":  [
+                                     "https://jjmpyfxaoavwervlkzam.supabase.co/storage/v1/object/public/product-images/1784403090583-61HWoAclB9L.jpg"
+                                 ],
+                      "isActive":  true,
+                      "createdAt":  "2026-07-18T16:02:47.137Z",
+                      "updatedAt":  "2026-07-18T19:31:31.670Z"
+                  },
+                  {
+                      "id":  "cmrqup2fs000166nz1n0aolsx",
+                      "name":  "uuuuuuuu",
+                      "description":  "pppppp",
+                      "category":  "HAIR",
+                      "basePrice":  20000,
+                      "images":  [
+
+                                 ],
+                      "isActive":  true,
+                      "createdAt":  "2026-07-18T21:00:11.800Z",
+                      "updatedAt":  "2026-07-18T21:00:11.800Z"
+                  }
+              ],
+    "Count":  5
+}

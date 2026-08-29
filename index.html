@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="splash-on">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -803,6 +803,22 @@
     .splash.is-out  { opacity: 0; }
     .splash.is-done { display: none; }
 
+    /* The real guarantee that nothing shows through.
+       Mobile browsers disagree about how tall a `position: fixed` box is while
+       the URL bar is collapsing - iOS Safari in particular can hand back the
+       SMALL viewport, leaving a strip of page visible under the splash. Rather
+       than trusting any viewport unit, hide the page itself for the duration:
+       whatever strip the splash box fails to cover is painted splash ground,
+       so there is nothing to see either way. `.splash-on` is on <html> from the
+       first paint and comes off when the splash starts fading, so the content
+       cross-fades in exactly as before. */
+    html.splash-on,
+    html.splash-on body { background: #050403; }
+    html.splash-on .bg-photos,
+    html.splash-on .bg-overlay,
+    html.splash-on .bg-vignette,
+    html.splash-on main { visibility: hidden; }
+
     .splash-photo {
       position: absolute;
       inset: 0;
@@ -958,6 +974,18 @@
       .splash-blade-bottom { animation: none !important; transform: rotate(18deg) !important; }
     }
   </style>
+
+  <noscript>
+    <style>
+      /* Without JS the gate below never runs, so the splash would hang forever. */
+      .splash { display: none; }
+      html.splash-on .bg-photos,
+      html.splash-on .bg-overlay,
+      html.splash-on .bg-vignette,
+      html.splash-on main { visibility: visible; }
+      html.splash-on, html.splash-on body { background: #0B0B0B; }
+    </style>
+  </noscript>
 </head>
 <body>
 
@@ -1156,8 +1184,11 @@
        photos are still downloading (MAX). Here readiness is window.load,
        the web equivalent of the app's initial-data check. */
     (function splashGate() {
+      const root = document.documentElement;
+      const reveal = function () { root.classList.remove('splash-on'); };
+
       const splash = document.getElementById('splash');
-      if (!splash) return;
+      if (!splash) { reveal(); return; }
 
       const MIN_VISIBLE_MS = 2900;
       const MAX_VISIBLE_MS = 4000;
@@ -1169,6 +1200,7 @@
       function dismiss() {
         if (dismissed) return;
         dismissed = true;
+        reveal();                       // page comes back as the splash fades
         splash.classList.add('is-out');
         setTimeout(function () { splash.classList.add('is-done'); }, FADE_OUT_MS);
       }
@@ -1182,6 +1214,9 @@
 
       if (document.readyState === 'complete') onReady();
       else window.addEventListener('load', onReady, { once: true });
+
+      // Failsafe: whatever happens, the page is never left hidden.
+      setTimeout(reveal, MAX_VISIBLE_MS + FADE_OUT_MS + 1000);
     })();
   </script>
 </body>

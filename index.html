@@ -26,13 +26,20 @@
     :root {
       --bg: #0B0B0B;
       --text: #FAF6EC;
-      --muted: #B0A78F;
+      --muted: #D9CFB4;           /* light enough to read on the photos */
       --gold: #D4B45A;            /* brighter, warmer gold */
       --gold-deep: #B8923A;
       --gold-soft: rgba(212, 180, 90, 0.18);
       --glass-bg: rgba(18, 18, 18, 0.22);
       --glass-bg-strong: rgba(22, 22, 22, 0.34);
       --glass-border: rgba(212, 180, 90, 0.32);
+
+      /* Frosted plate behind any text that sits on the photos: dark enough
+         for the text to read, while the photo still shows around and,
+         softened, through it. */
+      --plate-bg: rgba(12, 12, 12, 0.56);
+      --plate-blur: blur(14px) saturate(140%);
+      --plate-border: rgba(212, 180, 90, 0.26);
     }
 
     html { -webkit-text-size-adjust: 100%; }
@@ -221,9 +228,8 @@
     }
 
     /* ========== HEADER (logo + name + by-mido + tagline) ========== */
-    /* One glass band sits behind just the title block — everything else
-       (logo + tagline + handle chips) is direct over the photo with a
-       strong text-shadow for legibility. */
+    /* One glass plate holds the title, "by Mido" and the tagline; only the
+       logo sits directly on the photo. */
     .header {
       display: flex;
       flex-direction: column;
@@ -233,13 +239,17 @@
     }
 
     .header-title {
-      display: inline-block;
-      padding: 10px 22px;
-      border-radius: 16px;
-      background: rgba(18, 18, 18, 0.45);
-      backdrop-filter: blur(8px) saturate(150%);
-      -webkit-backdrop-filter: blur(8px) saturate(150%);
-      border: 1px solid rgba(212, 180, 90, 0.22);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 22px 13px;
+      border-radius: 18px;
+      background: var(--plate-bg);
+      backdrop-filter: var(--plate-blur);
+      -webkit-backdrop-filter: var(--plate-blur);
+      border: 1px solid var(--plate-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
     }
 
     .shop-name {
@@ -253,7 +263,7 @@
       opacity: 0;
       animation: fadeUp 0.5s ease 0.2s both;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
-      margin: 0;
+      margin: 0 0 2px;
     }
 
     .shop-name .gold {
@@ -279,11 +289,11 @@
     }
 
     .tagline {
-      font-size: 0.7rem;
+      font-size: 0.66rem;
       font-weight: 500;
       letter-spacing: 0.26em;
       text-transform: uppercase;
-      color: var(--text);
+      color: var(--gold);
       text-align: center;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.3s both;
@@ -353,11 +363,11 @@
       gap: 12px;
       padding: 10px 14px;
 
-      background: rgba(18, 18, 18, 0.42);
-      backdrop-filter: blur(8px) saturate(150%);
-      -webkit-backdrop-filter: blur(8px) saturate(150%);
+      background: var(--plate-bg);
+      backdrop-filter: var(--plate-blur);
+      -webkit-backdrop-filter: var(--plate-blur);
 
-      border: 1px solid rgba(212, 180, 90, 0.22);
+      border: 1px solid var(--plate-border);
       border-radius: 18px;
 
       text-decoration: none;
@@ -414,7 +424,7 @@
     .link-btn:hover {
       transform: translateY(-3px) scale(1.01);
       border-color: rgba(212, 180, 90, 0.40);
-      background: rgba(22, 22, 22, 0.52);
+      background: rgba(14, 14, 14, 0.68);
       box-shadow:
         0 14px 30px rgba(0, 0, 0, 0.35),
         0 0 18px rgba(212, 180, 90, 0.18),
@@ -484,6 +494,7 @@
       font-weight: 500;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
 
     .link-handle {
@@ -525,27 +536,19 @@
     }
 
     .app-download-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       font-size: 0.66rem;
       font-weight: 500;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--text);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+      padding: 7px 16px;
+      border-radius: 999px;
+      background: var(--plate-bg);
+      backdrop-filter: var(--plate-blur);
+      -webkit-backdrop-filter: var(--plate-blur);
+      border: 1px solid var(--plate-border);
       margin: 0;
     }
-
-    /* Hairlines either side, same gold as the razor divider */
-    .app-download-label::before,
-    .app-download-label::after {
-      content: '';
-      width: 22px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold));
-    }
-    .app-download-label::after { transform: scaleX(-1); }
 
     .app-download-label .gold { color: var(--gold); }
 
@@ -740,7 +743,23 @@
       z-index: 2;
     }
 
-    /* ========== HOURS ========== */
+    /* ========== HOURS + FOOTER (one plate) ========== */
+    .visit-info {
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px 11px;
+      border-radius: 16px;
+      background: var(--plate-bg);
+      backdrop-filter: var(--plate-blur);
+      -webkit-backdrop-filter: var(--plate-blur);
+      border: 1px solid var(--plate-border);
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.72s both;
+    }
+
     .hours {
       font-size: 0.7rem;
       font-weight: 500;
@@ -748,25 +767,16 @@
       text-transform: uppercase;
       color: var(--text);
       text-align: center;
-      opacity: 0;
-      animation: fadeUp 0.5s ease 0.72s both;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
-      padding: 6px 14px;
       margin: 0;
     }
 
-    /* ========== FOOTER ========== */
     .footer {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 500;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--muted);
       text-align: center;
-      opacity: 0;
-      animation: fadeUp 0.5s ease 0.78s both;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
-      padding: 4px 14px;
       margin: 0;
     }
 
@@ -787,7 +797,7 @@
       .bg-photo { animation: none; transform: none !important; }
       .bg-overlay, .bg-vignette { opacity: 1; }
       .card, .logo-mark, .shop-name, .by-mido, .tagline,
-      .divider, .links, .app-download, .book-cta, .hours, .footer {
+      .divider, .links, .app-download, .book-cta, .visit-info {
         opacity: 1 !important; transform: none !important;
       }
     }
@@ -1054,12 +1064,12 @@
         <!-- Logo mark (uses logo.jpeg; falls back to scissors icon if missing) -->
         <div class="logo-mark" role="img" aria-label="Fünf Sterne Friseur logo"></div>
 
-        <!-- Shop name (only piece with a frosted chip — for legibility over the photo) -->
+        <!-- Shop name, by-line and tagline share one frosted plate for legibility over the photos -->
         <div class="header-title">
           <h1 class="shop-name">FÜNF <span class="gold">STERNE</span> FRISEUR</h1>
+          <p class="by-mido">by Mido</p>
+          <p class="tagline">Präzise Schnitte · Seit 2018</p>
         </div>
-        <p class="by-mido">by Mido</p>
-        <p class="tagline">Präzise Schnitte · Seit 2018</p>
       </div>
 
       <!-- Razor divider -->
@@ -1144,11 +1154,11 @@
         <span class="book-cta-label">Termin buchen<span class="book-cta-sub">Anruf oder WhatsApp</span></span>
       </a>
 
-      <!-- Hours -->
-      <p class="hours">Mo – Sa · 09:00 – 19:00 Uhr</p>
-
-      <!-- Footer -->
-      <footer class="footer">Tippen · Folgen · Vorbeischauen</footer>
+      <!-- Hours + footer -->
+      <div class="visit-info">
+        <p class="hours">Mo – Sa · 09:00 – 19:00 Uhr</p>
+        <footer class="footer">Tippen · Folgen · Vorbeischauen</footer>
+      </div>
 
     </div>
   </main>

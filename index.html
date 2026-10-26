@@ -510,96 +510,113 @@
       transform: translateX(5px);
     }
 
-    /* ========== APP TEASER ========== */
-    .app-teaser {
-      width: 100%;
-      padding: 10px 14px;
-
-      background: rgba(18, 18, 18, 0.42);
-      backdrop-filter: blur(8px) saturate(150%);
-      -webkit-backdrop-filter: blur(8px) saturate(150%);
-
-      border: 1px dashed rgba(212, 180, 90, 0.30);
-      border-radius: 18px;
+    /* ========== APP STORE DOWNLOAD ==========
+       The badge is Apple's official artwork, served by Apple's marketing
+       tools - never redraw or recolour it. Apple's rules: at least 40px
+       tall on screen, clear space of a quarter of its height all round. */
+    .app-download {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 12px;
-      cursor: default;
-      pointer-events: none;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.22),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      gap: 10px;
+      padding: 6px 0 4px;
       opacity: 0;
       animation: fadeUp 0.5s ease 0.6s both;
     }
 
-    .app-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(212, 180, 90, 0.14);
+    .app-download-label {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 10px;
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+      margin: 0;
+    }
+
+    /* Hairlines either side, same gold as the razor divider */
+    .app-download-label::before,
+    .app-download-label::after {
+      content: '';
+      width: 22px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold));
+    }
+    .app-download-label::after { transform: scaleX(-1); }
+
+    .app-download-label .gold { color: var(--gold); }
+
+    .app-store-badge {
+      display: inline-flex;
+      border-radius: 9px;
+      line-height: 0;
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+      transition:
+        transform 0.28s cubic-bezier(.2,.7,.2,1),
+        box-shadow 0.28s cubic-bezier(.2,.7,.2,1);
+    }
+
+    .app-store-badge:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 14px 30px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(212, 180, 90, 0.35);
+    }
+
+    .app-store-badge:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 0.12s;
+    }
+
+    .app-store-badge:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+    }
+
+    .app-store-badge img {
+      display: block;
+      height: 52px;
+      width: auto;
+    }
+
+    /* Only if Apple's artwork can't be reached: a plain text badge so the
+       link still reads as "App Store" instead of a broken image. */
+    .app-store-fallback {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      height: 52px;
+      padding: 0 16px 0 13px;
+      background: #000;
+      border: 1px solid #A6A6A6;
+      border-radius: 9px;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Inter', sans-serif;
+      line-height: 1;
+    }
+
+    .app-store-fallback svg {
+      width: 24px;
+      height: 24px;
+      fill: #fff;
       flex-shrink: 0;
-      border: 1px solid rgba(212, 180, 90, 0.30);
-      position: relative;
-      z-index: 1;
     }
 
-    .app-icon svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--gold);
-      fill: none;
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .app-text {
-      flex: 1;
+    .app-store-fallback-text {
       display: flex;
       flex-direction: column;
-      position: relative;
-      z-index: 1;
+      gap: 2px;
     }
 
-    .app-label {
-      display: block;
-      font-size: 0.66rem;
-      color: var(--muted);
-      font-weight: 500;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
+    .app-store-fallback-small { font-size: 0.66rem; font-weight: 500; }
+    .app-store-fallback-big   { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em; }
 
-    .app-status {
-      display: block;
-      font-size: 0.92rem;
-      color: var(--text);
-      font-weight: 600;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    .app-pill {
-      position: relative;
-      z-index: 1;
-      color: var(--gold);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      font-weight: 600;
-      padding: 4px 10px;
-      border: 1px solid rgba(212, 180, 90, 0.35);
-      border-radius: 999px;
-      flex-shrink: 0;
-      background: rgba(212, 180, 90, 0.08);
-    }
+    .app-store-badge.fallback img { display: none; }
+    .app-store-badge.fallback .app-store-fallback { display: inline-flex; }
 
 
     /* ========== BOOKING CTA (gold liquid button) ========== */
@@ -770,7 +787,7 @@
       .bg-photo { animation: none; transform: none !important; }
       .bg-overlay, .bg-vignette { opacity: 1; }
       .card, .logo-mark, .shop-name, .by-mido, .tagline,
-      .divider, .links, .app-teaser, .book-cta, .hours, .footer {
+      .divider, .links, .app-download, .book-cta, .hours, .footer {
         opacity: 1 !important; transform: none !important;
       }
     }
@@ -1095,18 +1112,26 @@
 
       </nav>
 
-      <!-- 4) App teaser (not a link) -->
-      <div class="app-teaser" role="status" aria-label="Unsere App erscheint in Kürze">
-        <div class="app-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3l1.7 3.4 3.7.5-2.7 2.6.7 3.7L12 11.4 8.6 13.2l.7-3.7L6.6 6.9l3.7-.5L12 3z"/>
-          </svg>
-        </div>
-        <div class="app-text">
-          <span class="app-label">Unsere App</span>
-          <span class="app-status">Bald verfügbar</span>
-        </div>
-        <span class="app-pill" aria-hidden="true">Bald</span>
+      <!-- 4) iOS app — official "Laden im App Store" badge.
+           For the English badge swap de-de for en-us in both image URLs
+           and set alt="Download on the App Store". -->
+      <div class="app-download">
+        <p class="app-download-label">Unsere App <span class="gold">·</span> Jetzt verfügbar</p>
+        <a class="app-store-badge"
+           href="https://apps.apple.com/us/app/f%C3%BCnf-sterne/id6814974052"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Fünf Sterne App im App Store laden">
+          <img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/de-de"
+               data-fallback-src="https://tools.applemarketingtools.com/api/badges/download-on-the-app-store/black/de-de"
+               alt="Laden im App Store" height="52" />
+          <span class="app-store-fallback" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <span class="app-store-fallback-text">
+              <span class="app-store-fallback-small">Laden im</span>
+              <span class="app-store-fallback-big">App Store</span>
+            </span>
+          </span>
+        </a>
       </div>
 
       <!-- ===== BOOKING CTA ===== -->
@@ -1149,6 +1174,25 @@
       const test = new Image();
       test.onerror = function () { logo.classList.add('fallback'); };
       test.src = 'logo.jpeg';
+    })();
+
+    // App Store badge: try Apple's older badge endpoint if the current one
+    // fails, then fall back to the text badge so the link never looks broken.
+    (function wireAppStoreBadge() {
+      const badge = document.querySelector('.app-store-badge');
+      const img = badge && badge.querySelector('img');
+      if (!img) return;
+      function onError() {
+        const next = img.dataset.fallbackSrc;
+        if (next) {
+          delete img.dataset.fallbackSrc;
+          img.src = next;
+        } else {
+          badge.classList.add('fallback');
+        }
+      }
+      img.addEventListener('error', onError);
+      if (img.complete && img.naturalWidth === 0) onError();
     })();
 
     (function buildBackground() {

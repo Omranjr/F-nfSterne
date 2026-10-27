@@ -5,20 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>FÜNF STERNE FRISEUR by Mido · Premium Barbershop in Goch</title>
   <meta name="description" content="Premium Barbershop in Goch. Präzise Schnitte seit 2018." />
-  <meta name="theme-color" content="#0D0D0D" />
+  <meta name="theme-color" content="#0B0B0B" />
   <meta property="og:title" content="FÜNF STERNE FRISEUR by Mido" />
   <meta property="og:description" content="Premium Barbershop in Goch. Präzise Schnitte seit 2018." />
   <meta property="og:type" content="website" />
-  <!-- TODO: add real og:image URL -->
-  <meta property="og:image" content="" />
+  <meta property="og:url" content="https://funf5terne.netlify.app/" />
+  <!-- Absolute URL required: this is what WhatsApp / Instagram / Facebook fetch
+       for the link preview card. -->
+  <meta property="og:image" content="https://funf5terne.netlify.app/img/splash-owner.jpg" />
+  <meta property="og:image:width" content="628" />
+  <meta property="og:image:height" content="822" />
+  <meta property="og:locale" content="de_DE" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- Favicon: inline SVG scissors in gold -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='28' cy='28' r='13' fill='none' stroke='%23D4B45A' stroke-width='5'/%3E%3Ccircle cx='28' cy='72' r='13' fill='none' stroke='%23D4B45A' stroke-width='5'/%3E%3Cline x1='28' y1='41' x2='82' y2='20' stroke='%23D4B45A' stroke-width='5' stroke-linecap='round'/%3E%3Cline x1='28' y1='59' x2='82' y2='80' stroke='%23D4B45A' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
 
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet" />
-  <link rel="preload" as="image" href="splash-owner.png" />
+  <link rel="preload" as="image" href="img/splash-owner.jpg" fetchpriority="high" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,6 +48,8 @@
       --plate-bg: rgba(12, 12, 12, 0.56);
       --plate-blur: blur(14px) saturate(140%);
       --plate-border: rgba(212, 180, 90, 0.26);
+      /* The page's house curve - was written out longhand in nine places. */
+      --ease: cubic-bezier(.2, .7, .2, 1);
     }
 
     html { -webkit-text-size-adjust: 100%; }
@@ -87,7 +97,9 @@
       background-size: cover;
       background-position: center;
       background-color: #0a0a0a; /* graceful fallback when image fails */
-      will-change: transform;
+      /* No `will-change: transform` here: it pinned all six tiles to their own
+         composited layers for the life of the page. Browsers promote an
+         animated transform on their own, for as long as it runs. */
     }
 
     /* On mobile, bias the crop to the upper third so faces stay in frame */
@@ -180,7 +192,7 @@
     /* --- Reflections removed: card is now transparent so photos are fully visible --- */
     .card > * { position: relative; z-index: 1; }
 
-    /* ========== LOGO (uses logo.jpeg) ========== */
+    /* ========== LOGO (uses img/logo.jpg) ========== */
     .logo-mark {
       width: 80px;
       height: 80px;
@@ -188,10 +200,10 @@
       border-radius: 50%;
       position: relative;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.1s both;
+      animation: fadeUp 0.5s var(--ease) 0.1s both;
 
       /* Real logo image fills the disc */
-      background-image: url('logo.jpeg');
+      background-image: url('img/logo.jpg');
       background-size: cover;
       background-position: center top;
       background-repeat: no-repeat;
@@ -211,7 +223,7 @@
       pointer-events: none;
     }
 
-    /* Graceful fallback if logo.jpeg fails to load */
+    /* Graceful fallback if the logo fails to load */
     .logo-mark.fallback {
       background-image: none;
       background: rgba(212, 180, 90, 0.06);
@@ -261,7 +273,7 @@
       line-height: 1.05;
       color: var(--text);
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.2s both;
+      animation: fadeUp 0.5s var(--ease) 0.2s both;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
       margin: 0 0 2px;
     }
@@ -283,7 +295,7 @@
       letter-spacing: 0.10em;
       text-align: center;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.25s both;
+      animation: fadeUp 0.5s var(--ease) 0.25s both;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
       margin: 0;
     }
@@ -296,7 +308,7 @@
       color: var(--gold);
       text-align: center;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.3s both;
+      animation: fadeUp 0.5s var(--ease) 0.3s both;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
       margin: 0;
     }
@@ -309,7 +321,7 @@
       gap: 12px;
       padding: 4px 8px;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.4s both;
+      animation: fadeUp 0.5s var(--ease) 0.4s both;
     }
 
     .divider-line {
@@ -328,7 +340,7 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      animation: shimmerDraw 1.4s ease 0.7s both;
+      animation: shimmerDraw 1.4s var(--ease) 0.7s both;
     }
 
     .divider-icon {
@@ -351,7 +363,7 @@
       flex-direction: column;
       gap: 10px;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.5s both;
+      animation: fadeUp 0.5s var(--ease) 0.5s both;
     }
 
     /* One consistent floating glass pill per row.
@@ -382,10 +394,13 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
       transition:
-        transform 0.28s cubic-bezier(.2,.7,.2,1),
-        box-shadow 0.28s cubic-bezier(.2,.7,.2,1),
+        transform 0.28s var(--ease),
+        box-shadow 0.28s var(--ease),
         border-color 0.28s ease,
         background 0.28s ease;
+
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     /* Gold glow stroke on hover */
@@ -416,41 +431,41 @@
       height: 100%;
       background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.22) 50%, transparent 100%);
       transform: skewX(-18deg);
-      transition: left 0.7s cubic-bezier(.2,.7,.2,1);
+      transition: left 0.7s var(--ease);
       pointer-events: none;
       z-index: 0;
     }
 
-    .link-btn:hover {
-      transform: translateY(-3px) scale(1.01);
+    /* Hover-only, and said so explicitly: a phone has no cursor, and an
+       unguarded :hover sticks on after a tap on iOS - the row stays lifted and
+       lit until you touch elsewhere. */
+    @media (hover: hover) and (pointer: fine) {
+      .link-btn:hover {
+        transform: translateY(-3px) scale(1.01);
+        border-color: rgba(212, 180, 90, 0.40);
+        background: rgba(14, 14, 14, 0.68);
+        box-shadow:
+          0 14px 30px rgba(0, 0, 0, 0.35),
+          0 0 18px rgba(212, 180, 90, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      .link-btn:hover::before { opacity: 1; }
+      .link-btn:hover::after  { left: 130%; }
+      .link-btn:hover .link-arrow { transform: translateX(5px); }
+    }
+
+    /* The touch equivalent: press down, gold edge lights, arrow leans in.
+       Everything the cursor got, on the finger. */
+    .link-btn:active {
+      transform: translateY(-1px) scale(0.98);
       border-color: rgba(212, 180, 90, 0.40);
       background: rgba(14, 14, 14, 0.68);
-      box-shadow:
-        0 14px 30px rgba(0, 0, 0, 0.35),
-        0 0 18px rgba(212, 180, 90, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
-
-    .link-btn:hover::before { opacity: 1; }
-    .link-btn:hover::after  { left: 130%; }
-
-    .link-btn:active {
-      transform: translateY(-1px) scale(0.98);
       transition-duration: 0.12s;
     }
 
-    .link-btn:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
-
-    .link-btn:hover::before { opacity: 1; }
-    .link-btn:hover::after  { left: 130%; }
-
-    .link-btn:active {
-      transform: translateY(-1px) scale(0.98);
-      transition-duration: 0.12s;
-    }
+    .link-btn:active::before { opacity: 1; }
+    .link-btn:active .link-arrow { transform: translateX(4px); }
 
     .link-btn:focus-visible {
       outline: 2px solid var(--gold);
@@ -511,14 +526,10 @@
     .link-arrow {
       color: var(--gold);
       font-size: 1.05rem;
-      transition: transform 0.3s cubic-bezier(.2,.7,.2,1), color 0.2s ease;
+      transition: transform 0.3s var(--ease), color 0.2s ease;
       position: relative;
       z-index: 1;
       flex-shrink: 0;
-    }
-
-    .link-btn:hover .link-arrow {
-      transform: translateX(5px);
     }
 
     /* ========== APP STORE DOWNLOAD ==========
@@ -532,7 +543,7 @@
       gap: 10px;
       padding: 6px 0 4px;
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.6s both;
+      animation: fadeUp 0.5s var(--ease) 0.6s both;
     }
 
     .app-download-label {
@@ -658,12 +669,15 @@
       gap: 12px;
 
       transition:
-        transform 0.28s cubic-bezier(.2,.7,.2,1),
-        box-shadow 0.28s cubic-bezier(.2,.7,.2,1),
+        transform 0.28s var(--ease),
+        box-shadow 0.28s var(--ease),
         background-position 0.6s ease;
 
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.65s both;
+      animation: fadeUp 0.5s var(--ease) 0.65s both;
     }
 
     /* Glossy top reflection on the CTA */
@@ -687,26 +701,42 @@
       height: 100%;
       background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
       transform: skewX(-18deg);
-      transition: left 0.8s cubic-bezier(.2,.7,.2,1);
+      transition: left 0.8s var(--ease);
       pointer-events: none;
       z-index: 1;
     }
 
-    .book-cta:hover {
-      transform: translateY(-3px) scale(1.01);
-      background-position: 100% 50%;
-      box-shadow:
-        0 22px 48px rgba(212, 180, 90, 0.45),
-        0 6px 16px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.65),
-        inset 0 -1px 0 rgba(120, 80, 20, 0.40);
-    }
+    @media (hover: hover) and (pointer: fine) {
+      .book-cta:hover {
+        transform: translateY(-3px) scale(1.01);
+        background-position: 100% 50%;
+        box-shadow:
+          0 22px 48px rgba(212, 180, 90, 0.45),
+          0 6px 16px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.65),
+          inset 0 -1px 0 rgba(120, 80, 20, 0.40);
+      }
 
-    .book-cta:hover::after { left: 130%; }
+      .book-cta:hover::after { left: 130%; }
+    }
 
     .book-cta:active {
       transform: translateY(-1px) scale(0.98);
+      background-position: 100% 50%;
       transition-duration: 0.12s;
+    }
+
+    /* No cursor means the gold never sweeps, and the sweep is the whole point
+       of a liquid-gold button. On touch it runs itself: one slow pass, long
+       pause, so it reads as sheen catching the light rather than a blinking
+       advert. */
+    @media (hover: none) {
+      .book-cta::after { animation: ctaSweep 7s var(--ease) 2.4s infinite; }
+    }
+
+    @keyframes ctaSweep {
+      0%        { left: -120%; }
+      22%, 100% { left: 130%; }
     }
 
     .book-cta:focus-visible {
@@ -757,7 +787,7 @@
       -webkit-backdrop-filter: var(--plate-blur);
       border: 1px solid var(--plate-border);
       opacity: 0;
-      animation: fadeUp 0.5s ease 0.72s both;
+      animation: fadeUp 0.5s var(--ease) 0.72s both;
     }
 
     .hours {
@@ -845,6 +875,22 @@
     html.splash-on .bg-overlay,
     html.splash-on .bg-vignette,
     html.splash-on main { visibility: hidden; }
+
+    /* Hold the card's entrance until the splash actually lifts.
+       The stagger below (fadeUp, 0.1s through 0.78s, plus the divider's gold
+       sweep at 0.7s) used to run its whole course behind an opaque splash that
+       stays up for 2.9-4s - so by the time anyone could see the card, it had
+       finished assembling and simply appeared, static. Pausing holds the
+       delays too, so removing `.splash-on` starts the sequence from the top and
+       the card assembles in view, cross-fading with the splash's own fade-out.
+       Same animations, same timings - just pointed at the eye instead of at a
+       covered screen. The photo wall pauses as well: nothing behind an opaque
+       splash is worth compositing, which keeps the intro smooth on weak phones. */
+    html.splash-on main,
+    html.splash-on main *,
+    html.splash-on main *::before,
+    html.splash-on main *::after,
+    html.splash-on .bg-photo { animation-play-state: paused; }
 
     .splash-photo {
       position: absolute;
@@ -1020,7 +1066,7 @@
        SPLASH - the same intro the mobile app plays on launch
        ===================================================== -->
   <div class="splash" id="splash" role="presentation" aria-hidden="true">
-    <img class="splash-photo" src="splash-owner.png" alt="" />
+    <img class="splash-photo" src="img/splash-owner.jpg" alt="" />
     <div class="splash-scrim"></div>
     <div class="splash-shimmer"></div>
 
@@ -1146,7 +1192,7 @@
 
       <!-- ===== BOOKING CTA ===== -->
       <a class="book-cta"
-         href="tel:+4900000000"
+         href="tel:+491634491480"
          aria-label="Termin vereinbaren — Anruf oder WhatsApp">
         <svg class="book-cta-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="#1A1408" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2z"/>
@@ -1168,22 +1214,25 @@
     /* Photos are in the project folder. Drop your real photo URLs here
        (or local filenames next to this HTML) and the cinematic background
        handles the rest — grid, Ken Burns, vignette, overlays. */
+    /* Web-sized copies live in img/ - same pictures, ~70% lighter, which is
+       what makes the first load feel instant on mobile data. The full-size
+       originals are still in the project root, untouched. */
     const PHOTOS = [
-      'P1 (1).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (2).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (3).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (4).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'P1 (5).jpeg',   /* TODO: replace with real photo URL or keep local */
-      'pic6.jpeg',     /* TODO: replace with real photo URL or keep local */
+      'img/photo-1.jpg',
+      'img/photo-2.jpg',
+      'img/photo-3.jpg',
+      'img/photo-4.jpg',
+      'img/photo-5.jpg',
+      'img/photo-6.jpg',
     ];
 
-    // Swap to scissors fallback if logo.jpeg fails to load
+    // Swap to scissors fallback if the logo fails to load
     (function wireLogo() {
       const logo = document.querySelector('.logo-mark');
       if (!logo) return;
       const test = new Image();
       test.onerror = function () { logo.classList.add('fallback'); };
-      test.src = 'logo.jpeg';
+      test.src = 'img/logo.jpg';
     })();
 
     // App Store badge: try Apple's older badge endpoint if the current one
